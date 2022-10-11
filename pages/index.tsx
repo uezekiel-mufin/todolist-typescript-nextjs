@@ -19,7 +19,7 @@ const Home: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <h3 className='todo_header font-bold'>My todolist app</h3>
+      <h3 className='todo_header font-bold mt-4'>My todolist app</h3>
       <HomePage
         todos={todos}
         setTodos={setTodos}

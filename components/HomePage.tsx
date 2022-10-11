@@ -61,30 +61,32 @@ const HomePage = ({ todos, setTodos }: Todos) => {
   return (
     <div className='todo px-4 pt-8 overflow-auto'>
       <h2 className='todo_title px-8 font-bold text-center'>
-        What is the Plan for Today
+        What is the Plan for Toda
       </h2>
-      <div className='flex  border-2 border-indigo-600 rounded-lg mb-8 '>
-        <input
-          type='text'
-          value={todo}
-          name='todo'
-          placeholder='Add a todo'
-          onChange={(e) => setTodo(e.target.value)}
-          className=' border-2 border-indigo-600 border-solid text-sm flex-1 px-3 focus:outline-none'
-        />
-        <input
-          type='date'
-          value={deadline}
-          name='deadline'
-          placeholder='deadline'
-          onChange={(e) => setDeadline(e.target.value)}
-          className='w-[30%] border-2 border-indigo-600 border-solid text-sm px-2 focus:outline-none'
-        />
+      <div className='flex flex-col md:flex-row mx-4 border-2 border-indigo-600 rounded-lg mb-8 '>
+        <div className='flex'>
+          <input
+            type='text'
+            value={todo}
+            name='todo'
+            placeholder='Add a todo'
+            onChange={(e) => setTodo(e.target.value)}
+            className=' border-2 border-indigo-600 border-solid text-sm flex-1 py-2 px-3 focus:outline-none'
+          />
+          <input
+            type='date'
+            value={deadline}
+            name='deadline'
+            placeholder='deadline'
+            onChange={(e) => setDeadline(e.target.value)}
+            className='md:w-[30%] border-2 border-indigo-600 border-solid text-sm px-2 focus:outline-none'
+          />
+        </div>
         <button
           onClick={() => {
             handleColor(), handleSubmit();
           }}
-          className='text-white bg-indigo-600 px-4 py-1 text-sm  hover:bg-red-200 transition-all duration-300 ease-in-out'
+          className='text-white bg-indigo-600 px-4 py-1 text-sm  hover:bg-indigo-400 transition-all duration-300 ease-in-out'
         >
           Add Todo
         </button>
