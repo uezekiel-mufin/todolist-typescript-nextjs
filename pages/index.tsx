@@ -1,15 +1,15 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import HomePage from "../components/HomePage";
 import { Todos } from "../interfaces/types";
 import Cookies from "js-cookie";
-
+import { getCookie, setCookie } from "typescript-cookie";
 const Home: NextPage = () => {
   const [ssr, setSsr] = useState(true);
-
-  const [todos, setTodos] = useState<Todos[]>(
-    Cookies.get("todos") ? JSON.parse(Cookies.get("todos")) : []
+  let cookiesValue = Cookies.get("todos");
+  const [todos, setTodos] = useState(
+    cookiesValue ? JSON.parse(cookiesValue) : []
   );
   return (
     <div className='todo_container '>
@@ -20,7 +20,19 @@ const Home: NextPage = () => {
       </Head>
 
       <h3 className='todo_header font-bold'>My todolist app</h3>
-      <HomePage todos={todos} setTodos={setTodos} />
+      <HomePage
+        todos={todos}
+        setTodos={setTodos}
+        setEdit={function (value: SetStateAction<Boolean>): void {
+          throw new Error("Function not implemented.");
+        }}
+        editTodo={{
+          deadline: "",
+          todo: "",
+          id: "",
+          bg: "",
+        }}
+      />
     </div>
   );
 };

@@ -1,5 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Todos } from "../interfaces/types";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
+import { EditProps, Todos } from "../interfaces/types";
 import { AiOutlineEdit, AiOutlineCloseCircle } from "react-icons/ai";
 import Cookies from "js-cookie";
 import EditTodo from "./EditTodo";
@@ -11,38 +16,47 @@ const HomePage = ({ todos, setTodos }: Todos) => {
   const [green, setGreen] = useState<string>("");
   const [blue, setBlue] = useState<string>("");
   const [edit, setEdit] = useState<Boolean>(false);
-  const [editTodo, setEditTodo] = useState({});
+  const [editTodo, setEditTodo] = useState<EditProps | any>();
 
-  const handleSubmit = (): void => {
+  let redd = "";
+  let greenn = "";
+  let bluee = "";
+
+  const handleColor = () => {
     const max = 200;
     const min = 0;
-    setRed(Math.trunc(Math.random() * (max - min) - min).toString());
-    setGreen(Math.trunc(Math.random() * (max - min) - min).toString());
-    setBlue(Math.trunc(Math.random() * (max - min) - min).toString());
-    const id = Date.now().toString();
-
-    setTodos([
-      ...todos,
-      { todo, deadline, id, bg: `rgb(${red},${green},${blue})` },
-    ]);
-    // setTodo("");
-    // setDeadline("");
+    redd = Math.trunc(Math.random() * (max - min) - min).toString();
+    greenn = Math.trunc(Math.random() * (max - min) - min).toString();
+    bluee = Math.trunc(Math.random() * (max - min) - min).toString();
   };
 
+  const handleSubmit = (): void => {
+    setRed(redd);
+    setGreen(greenn);
+    setBlue(bluee);
+    const id = Date.now().toString();
+    setTodos([
+      ...todos,
+      { todo, deadline, id, bg: `rgb(${redd},${greenn},${bluee})` },
+    ]);
+  };
+
+  useLayoutEffect(() => {
+    handleColor();
+  });
+
   useEffect(() => {
-    console.log(todos);
-    console.log(todos);
     Cookies.set("todos", JSON.stringify(todos));
   }, [todos]);
 
-  const handleDelete = (id) => {
+  const handleDelete = (id: string) => {
     const updatedTodos = todos.filter((todo) => todo.id !== id);
     setTodos(updatedTodos);
   };
 
-  const handleEdit = (editTodo: Todos) => {
+  const handleEdit = (item: EditProps) => {
     setEdit(true);
-    setEditTodo(editTodo);
+    setEditTodo(item);
   };
   return (
     <div className='todo px-4 pt-8 overflow-auto'>
@@ -67,7 +81,9 @@ const HomePage = ({ todos, setTodos }: Todos) => {
           className='w-[30%] border-2 border-indigo-600 border-solid text-sm px-2 focus:outline-none'
         />
         <button
-          onClick={handleSubmit}
+          onClick={() => {
+            handleColor(), handleSubmit();
+          }}
           className='text-white bg-indigo-600 px-4 py-1 text-sm  hover:bg-red-200 transition-all duration-300 ease-in-out'
         >
           Add Todo
@@ -80,24 +96,27 @@ const HomePage = ({ todos, setTodos }: Todos) => {
           editTodo={editTodo}
           setEdit={setEdit}
           id={""}
+          deadline={""}
+          bg={""}
+          todo=''
         />
       ) : (
         <div className='flex flex-col gap-3 w-full'>
-          {todos.map((todo, index) => (
+          {todos.map((item, index) => (
             <div
-              key={todo?.id}
-              style={{ background: todo.bg }}
+              key={item?.id}
+              style={{ background: item.bg }}
               className='rounded-lg p-3 flex justify-between text-sm'
             >
               <h4 className='text-white font-semibold capitalize'>
-                {`${index + 1}.`} {todo.todo}
+                {`${index + 1}.`} {item.todo}
               </h4>
-              <span className='text-white font-semibold'>{todo.deadline}</span>
+              <span className='text-white font-semibold'>{item.deadline}</span>
               <div className='todo_actions text-white flex gap-1'>
-                <span onClick={() => handleDelete(todo.id)}>
+                <span onClick={() => handleDelete(item.id)}>
                   <AiOutlineCloseCircle />
                 </span>
-                <span onClick={() => handleEdit(todo)}>
+                <span onClick={() => handleEdit(item)}>
                   <AiOutlineEdit />
                 </span>
               </div>

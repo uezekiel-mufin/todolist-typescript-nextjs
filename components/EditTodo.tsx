@@ -1,10 +1,14 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { Todos } from "../interfaces/types";
+import React, { useState, useLayoutEffect } from "react";
+import { EditProps, Todos } from "../interfaces/types";
 
-const EditTodo = ({ todos, setTodos, editTodo, setEdit }: Todos) => {
+const EditTodo = ({
+  todos,
+  setTodos,
+  editTodo,
+  setEdit,
+}: Todos & EditProps) => {
   const [updatedDeadline, setUpdatedDeadline] = useState<string>("");
   const [updatedtodo, setUpdatedTodo] = useState<string>("");
-  console.log(editTodo);
 
   const handleUpdate = () => {
     const newTodos = todos.map((todo) => {
@@ -12,6 +16,8 @@ const EditTodo = ({ todos, setTodos, editTodo, setEdit }: Todos) => {
         return {
           todo: updatedtodo,
           deadline: updatedDeadline,
+          bg: editTodo.bg,
+          id: editTodo.id,
         };
       } else {
         return todo;
@@ -24,10 +30,7 @@ const EditTodo = ({ todos, setTodos, editTodo, setEdit }: Todos) => {
   useLayoutEffect(() => {
     setUpdatedDeadline(editTodo.deadline);
     setUpdatedTodo(editTodo.todo);
-  }, []);
-
-  console.log(updatedtodo);
-  console.log(updatedDeadline);
+  }, [editTodo.deadline, editTodo.todo]);
 
   return (
     <div className='flex border-2 border-indigo-600 rounded-lg mb-8 '>
